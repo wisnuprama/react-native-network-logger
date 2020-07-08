@@ -44,7 +44,6 @@
     "example": "yarn --cwd example",
     "bootstrap": "yarn example && yarn"
   },
-  "dependencies": {},
   "devDependencies": {
     "@react-native-community/bob": "^0.15.2",
     "@react-native-community/eslint-config": "^2.0.0",

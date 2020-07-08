@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Share,
-  TextInput,
-  Platform,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Share } from 'react-native';
+import JSONTree from '../compat/components/JSONTree';
 import type NetworkRequestInfo from '../NetworkRequestInfo';
 import { useThemedStyles, Theme } from '../theme';
 import ResultItem from './ResultItem';
@@ -46,29 +39,18 @@ const Headers = ({
 
 const LargeText: React.FC<{ children: string }> = ({ children }) => {
   const styles = useThemedStyles(themedStyles);
-
-  if (Platform.OS === 'ios') {
-    /**
-     * A readonly TextInput is used because large Text blocks sometimes don't render on iOS
-     * See this issue https://github.com/facebook/react-native/issues/19453
-     * Note: Even with the fix mentioned in the comments, text with ~10,000 lines still fails to render
-     */
-    return (
-      <TextInput
-        style={[styles.content, styles.largeContent]}
-        multiline
-        editable={false}
-      >
-        {children}
-      </TextInput>
-    );
+  let data;
+  try {
+    data = JSON.parse(children);
+  } catch {
+    data = children;
   }
 
   return (
     <View style={styles.largeContent}>
       <ScrollView nestedScrollEnabled>
-        <View>
-          <Text style={styles.content}>{children}</Text>
+        <View style={styles.content}>
+          <JSONTree data={data} />
         </View>
       </ScrollView>
     </View>
